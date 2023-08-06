@@ -7,7 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/contract")
@@ -65,6 +68,19 @@ public class ContractController {
         } else {
             ResponseEntity.notFound().build();
             return "Fails";
+        }
+    }
+
+    // Search by hotel name and booking date
+    @GetMapping("/search")
+    public ResponseEntity<Object> searchContracts(@RequestBody Map<String, String> request) {
+        String hotelName = request.get("hotelName");
+        Date date = Date.valueOf(request.get("bookingDate"));
+        List<Contract> contracts = contractService.searchContracts(hotelName, date);
+        if (contracts.isEmpty()) {
+            return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
+        } else {
+            return ResponseEntity.ok(contracts);
         }
     }
 }

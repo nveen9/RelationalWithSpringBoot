@@ -6,6 +6,8 @@ import com.example.relational.repository.ContractRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -67,5 +69,24 @@ public class ContractService {
         } else {
             return false;
         }
+    }
+
+    // Search by Hotel Name and Booking Date
+    public List<Contract> searchContracts(String hotelName, Date bookingDate) {
+
+        List<Contract> matchingContracts = new ArrayList<>();
+        List<Contract> allContracts = contractRepository.findAll();
+
+        for (Contract contract : allContracts) {
+            if (contract.getHotelName().equalsIgnoreCase(hotelName)
+                    &&
+                    !contract.getStartDate().after(bookingDate) &&
+                    !contract.getEndDate().before(bookingDate))
+            {
+                matchingContracts.add(contract);
+            }
+        }
+
+        return matchingContracts;
     }
 }
