@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "Rooms")
 public class Room {
@@ -16,9 +18,6 @@ public class Room {
     private Long id;
     private String roomType;
     private int maxAdults;
-    private int price;
+    private double price;
     private int availableRooms;
-    @ManyToOne
-    @JoinColumn(name = "hotel_id")
-    private Hotel hotel;
 }
